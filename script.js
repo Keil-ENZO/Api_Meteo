@@ -1,42 +1,45 @@
 const inputSearch = document.getElementById("search");
 const latText = document.getElementById("lat");
 const lonText = document.getElementById("lon");
-const btn = document.getElementById("btn");
+const form = document.getElementById("form");
 
 const Api_key = "afcadc1c10c3d62cc2d1c7ec7ef9931e";
+let lat;
+let long;
 
-//Trouver c'est coordonnee gps
-
-//http://api.openweathermap.org/geo/1.0/direct?q=London&appid={API key}
-
-form.addEventListener("submit", (e) => {
+//Trouver la meteo d'une ville
+function searchCity(e) {
   e.preventDefault();
   fetch(
-    `http://api.openweathermap.org/geo/1.0/direct?q=${inputSearch.value}&appid=${Api_key}`
+    `https://api.openweathermap.org/data/2.5/forecast?q=${inputSearch.value}&lang=fr&appid=${Api_key}`
   )
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
     });
-});
-
-// //Geocalisation de l'utilisateur
-function getLocation() {
-  navigator.geolocation.getCurrentPosition((position) => {
-    let lat = position.coords.latitude;
-    let long = position.coords.longitude;
-
-    latText.innerText = lat.toFixed(2);
-    lonText.innerText = long.toFixed(2);
-  });
 }
 
-getLocation();
+//Localisation de l'utilisateur
+function success(pos) {
+  const crd = pos.coords;
 
-fetch(
-  `https://api.openweathermap.org/data/2.5/weather?lat=${"43.65"}&lon=${"6.92"}&appid=${Api_key}`
-)
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-  });
+  lat = crd.latitude;
+  long = crd.longitude;
+
+  latText.innerHTML = lat;
+  lonText.innerHTML = long;
+
+  // Appel à fetch une fois que les coordonnées sont définies
+  fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&lang=fr&appid=${Api_key}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    });
+}
+
+navigator.geolocation.getCurrentPosition(success);
+
+//Event Listener
+form.addEventListener("submit", searchCity);
