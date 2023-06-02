@@ -19,6 +19,15 @@ hr {
   border-radius: 20px;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.focus {
+  background-color: rgba(128, 128, 128, 0.2);
+}
+
 main {
   display: flex;
   align-items: center;
@@ -45,20 +54,37 @@ main {
   align-items: center;
   margin: 50px 0;
 }
-.content .main-content {
+.content .head-content .head #temps {
+  font-size: 2rem;
+  font-weight: bold;
+}
+.content .head-content .head #temperature {
+  font-size: 2rem;
+  font-weight: bold;
+}
+.content .head-content .head .head-right {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.content .main-content {
+  display: flex;
   justify-content: space-around;
 }
 .content .main-content .main {
   display: flex;
   justify-content: space-around;
   flex-direction: column;
-  width: 100%;
-  max-width: 80px;
   text-align: center;
+  width: 100%;
+  max-width: 100px;
   margin-top: 40px;
   padding: 10px;
   border-radius: 10px;
-  background-color: rgba(128, 128, 128, 0.2);
+}
+.content .main-content .main img {
+  width: 80%;
+  height: 80%;
+  margin: auto;
 }/*# sourceMappingURL=style.css.map */

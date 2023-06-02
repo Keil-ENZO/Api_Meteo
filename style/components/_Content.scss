@@ -10,26 +10,49 @@
       justify-content: space-around;
       align-items: center;
       margin: 50px 0;
+
+      #temps {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+
+      #temperature {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+
+      .head-right{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
     }
   }
 
   .main-content {
     display: flex;
-    flex-direction: column;
     justify-content: space-around;
 
     .main {
-        display: flex;
-        justify-content: space-around;
-        flex-direction: column;
-        width: 100%;
-        max-width: 80px;
-        text-align: center;
-        margin-top: 40px ;
-        padding: 10px;
-        border-radius: 10px;
-        background-color: rgba(128, 128, 128, 0.2);//Background pour le focus celon l'heure
-        
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+      text-align: center;
+      width: 100%;
+      max-width: 100px;
+
+      margin-top: 40px;
+      padding: 10px;
+      border-radius: 10px;
+
+      img {
+        width: 80%;
+        height: 80%;
+        margin: auto;
+      }
+
+      
     }
   }
 }
