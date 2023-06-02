@@ -1,0 +1,35 @@
+.content {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 100%;
+
+  .head-content {
+    .head {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 50px 0;
+    }
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    .main {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        width: 100%;
+        max-width: 80px;
+        text-align: center;
+        margin-top: 40px ;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: rgba(128, 128, 128, 0.2);//Background pour le focus celon l'heure
+        
+    }
+  }
+}

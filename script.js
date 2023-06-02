@@ -11,7 +11,7 @@ let long;
 function searchCity(e) {
   e.preventDefault();
   fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?q=${inputSearch.value}&lang=fr&appid=${Api_key}`
+    `https://api.openweathermap.org/data/2.5/forecast?q=${inputSearch.value}&lang=fr&appid=${Api_key}&units=metric`
   )
     .then((response) => response.json())
     .then((data) => {
@@ -31,11 +31,15 @@ function success(pos) {
 
   // Appel à fetch une fois que les coordonnées sont définies
   fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&lang=fr&appid=${Api_key}`
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&lang=fr&appid=${Api_key}&units=metric`
   )
     .then((response) => response.json())
     .then((data) => {
+      const name = document.getElementById("name");
       console.log(data);
+
+      //Affichage de la météo
+      name.innerHTML = data.city.name; //Premiere info mise sur la page
     });
 }
 
