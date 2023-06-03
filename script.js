@@ -74,9 +74,9 @@ function success(pos) {
       } else if (data.list[0].weather[0].main === "Clouds") {
         document.body.style.backgroundColor = "rgb(118, 118, 118) ";
       } else if (data.list[0].weather[0].main === "Rain") {
-        document.body.style.backgroundColor = "rgb(118, 118, 118) ";
+        document.body.style.backgroundColor = "rgb(118, 118, 130) ";
       } else if (data.list[0].weather[0].main === "Snow") {
-        document.body.style.backgroundColor = "rgb(188, 181, 181)";
+        document.body.style.backgroundColor = "rgb(195, 181, 181)";
       } else if (data.list[0].weather[0].main === "Thunderstorm") {
         document.body.style.backgroundColor = "rgb(84, 84, 84)";
       } else if (data.list[0].weather[0].main === "Drizzle") {
@@ -140,7 +140,9 @@ function success(pos) {
             humidite.innerHTML = "Humidite " + forecast.main.humidity + " %";
             pression.innerHTML = "Presssion " + forecast.main.pressure + " hPa";
 
-            icon.src = `https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
+            const newIcon = forecast.weather[0].icon;
+            const iconElement = document.querySelector("#icon");
+            iconElement.src = `https://openweathermap.org/img/wn/${newIcon}.png`;
 
             //Background celon la meteo
             if (forecast.weather[0].main === "Clear") {
