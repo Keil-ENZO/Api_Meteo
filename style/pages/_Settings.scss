@@ -10,7 +10,6 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 1.2rem;
   line-height: 1.5;
-  background-color: skyblue ;
 }
 
 
@@ -29,3 +28,17 @@ a {
   background-color: rgba(128, 128, 128, 0.2);
 }
 
+.active {
+  background-color: rgba(128, 128, 128, 0.2);
+}
+
+input {
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 10px;
+  text-align: center;
+  font-size: 1.2rem;
+  background-color: transparent;
+  cursor: pointer;
+}

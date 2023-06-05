@@ -2,7 +2,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255, 255, 255, 0.454);
+    background-color: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(5px);
     width: 100%;
     max-width: 600px;
@@ -10,3 +10,36 @@ main {
     margin: auto;
     border-radius: 20px;
 }
+
+.icon {
+    padding: 8px;
+    border-radius: 50%;
+    background-color: black;
+    transition: 0.4s ease-in-out;
+    cursor: pointer;
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+  }
+
+  .input {
+    animation: widthInput 0.4s ease-in-out;
+    animation-delay: white 0.4s ease-in-out;
+    border-radius: 20px;
+    opacity: 0;
+    width: 0;
+    text-align: center;
+    transition: 0.3s ease-in-out;
+    }
+
+
+  @keyframes widthInput {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 200px;
+    }
+  }

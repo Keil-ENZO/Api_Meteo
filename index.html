@@ -13,10 +13,13 @@
       <div class="content">
 
         <nav>
-          <h3>filter</h3>
-          <h3>filter</h3>
+          <input type="button" class="filter" value="Localisation" id="localisation">
+          <input type="button" class="filter" value="4 Jours" id="nextDays">
           <form id="form" action="">
-            <input type="text" placeholder="Entrer votre ville" id="search" />
+            <div class="search">
+              <input id="search" type="search" class="input" placeholder="Recherche">
+              <img id="iconSearch" onclick="searchHandler()" class="icon" src="./style/assets/search.svg" alt="">
+          </div>
           </form>
 
         </nav>

@@ -8,8 +8,7 @@ let lat;
 let long;
 
 //Trouver la meteo d'une ville
-function searchCity(e) {
-  e.preventDefault();
+function searchCity() {
   fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${inputSearch.value}&lang=fr&appid=${Api_key}&units=metric`
   )
@@ -48,7 +47,9 @@ function searchCity(e) {
       humidite.innerHTML = "Humidite " + data.list[0].main.humidity + " %";
       pression.innerHTML = "Presssion " + data.list[0].main.pressure + " hPa";
 
-      icon.src = `https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}.png`;
+      const newIcon = data.list[0].weather[0].icon;
+      const iconElement = document.querySelector("#icon");
+      iconElement.src = `https://openweathermap.org/img/wn/${newIcon}.png`;
 
       //Background celon la meteo
       if (data.list[0].weather[0].main === "Clear") {
@@ -133,7 +134,7 @@ function searchCity(e) {
             } else if (forecast.weather[0].main === "Clouds") {
               document.body.style.backgroundColor = "rgb(118, 118, 118) ";
             } else if (forecast.weather[0].main === "Rain") {
-              document.body.style.backgroundColor = "rgb(118, 118, 118) ";
+              document.body.style.backgroundColor = "rgb(120, 120, 118) ";
             } else if (forecast.weather[0].main === "Snow") {
               document.body.style.backgroundColor = "rgb(188, 181, 181)";
             } else if (forecast.weather[0].main === "Thunderstorm") {
@@ -177,6 +178,9 @@ function searchCity(e) {
           return;
         }
       });
+    })
+    .catch(() => {
+      alert("Cette ville n'existe pas");
     });
 }
 
@@ -235,7 +239,7 @@ function success(pos) {
       } else if (data.list[0].weather[0].main === "Clouds") {
         document.body.style.backgroundColor = "rgb(118, 118, 118) ";
       } else if (data.list[0].weather[0].main === "Rain") {
-        document.body.style.backgroundColor = "rgb(118, 118, 130) ";
+        document.body.style.backgroundColor = "rgb(120, 120, 118)  ";
       } else if (data.list[0].weather[0].main === "Snow") {
         document.body.style.backgroundColor = "rgb(195, 181, 181)";
       } else if (data.list[0].weather[0].main === "Thunderstorm") {
@@ -256,6 +260,7 @@ function success(pos) {
           forecastElement.setAttribute("href", "#");
 
           forecastElement.classList.add("main");
+
           if (count === 0) {
             forecastElement.classList.add("focus");
           }
@@ -306,19 +311,19 @@ function success(pos) {
             iconElement.src = `https://openweathermap.org/img/wn/${newIcon}.png`;
 
             //Background celon la meteo
-            if (forecast.weather[0].main === "Clear") {
+            if (data.list[0].weather[0].main === "Clear") {
               document.body.style.backgroundColor = "skyblue";
-            } else if (forecast.weather[0].main === "Clouds") {
+            } else if (data.list[0].weather[0].main === "Clouds") {
               document.body.style.backgroundColor = "rgb(118, 118, 118) ";
-            } else if (forecast.weather[0].main === "Rain") {
-              document.body.style.backgroundColor = "rgb(118, 118, 118) ";
-            } else if (forecast.weather[0].main === "Snow") {
-              document.body.style.backgroundColor = "rgb(188, 181, 181)";
-            } else if (forecast.weather[0].main === "Thunderstorm") {
+            } else if (data.list[0].weather[0].main === "Rain") {
+              document.body.style.backgroundColor = "rgb(120, 120, 118)  ";
+            } else if (data.list[0].weather[0].main === "Snow") {
+              document.body.style.backgroundColor = "rgb(195, 181, 181)";
+            } else if (data.list[0].weather[0].main === "Thunderstorm") {
               document.body.style.backgroundColor = "rgb(84, 84, 84)";
-            } else if (forecast.weather[0].main === "Drizzle") {
+            } else if (data.list[0].weather[0].main === "Drizzle") {
               document.body.style.backgroundColor = "rgb(188, 181, 181)";
-            } else if (forecast.weather[0].main === "Mist") {
+            } else if (data.list[0].weather[0].main === "Mist") {
               document.body.style.backgroundColor = "rgb(188, 181, 181)";
             }
           });
@@ -359,4 +364,37 @@ function success(pos) {
 navigator.geolocation.getCurrentPosition(success);
 
 //Event Listener
-form.addEventListener("submit", searchCity);
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  searchCity();
+
+  if (inputSearch.value === "") {
+    alert("Veuillez entrer une ville");
+  }
+});
+
+localisation.addEventListener("click", () => {
+  location.reload();
+  localisation.classList.add("active");
+  nextDays.classList.remove("active");
+});
+
+nextDays.addEventListener("click", () => {
+  nextDays.classList.add("active");
+  localisation.classList.remove("active");
+});
+
+const active = document.querySelector(".active");
+if (active) {
+  active.classList.remove("active");
+}
+localisation.classList.add("active");
+
+const iconSearch = document.getElementById("iconSearch");
+const search = document.getElementById("search");
+function searchHandler() {
+  iconSearch.replaceWith(search);
+  search.style.width = "100%";
+  search.style.opacity = "1";
+  search.focus();
+}
