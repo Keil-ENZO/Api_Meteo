@@ -4,17 +4,15 @@ const lonText = document.getElementById("lon");
 const form = document.getElementById("form");
 const iconSearch = document.getElementById("iconSearch");
 const search = document.getElementById("search");
-
+const active = document.querySelector(".active");
+const mainContent = document.querySelector(".main-content");
 const Api_key = "afcadc1c10c3d62cc2d1c7ec7ef9931e";
+
 let lat;
 let long;
-
-//objet avec les villes favorites
 let villesFav = [];
 
-console.log(villesFav[0]);
-
-const active = document.querySelector(".active");
+//Condition de la class active
 if (active) {
   active.classList.remove("active");
 }
@@ -93,7 +91,6 @@ async function searchCity() {
       }
 
       //Affichage de la list entiere avec ce code
-      const mainContent = document.querySelector(".main-content");
       mainContent.innerHTML = "";
       let count = 0;
 
@@ -223,12 +220,6 @@ async function success(pos) {
     .then((data) => {
       console.log(data);
 
-      // stars.addEventListener("click", () => {
-      //   console.log("click");
-
-      //   villesFav.push(data.city.name);
-      // });
-
       //Affichage de la météo
       ville.innerHTML = data.city.name;
       dateHeure.innerHTML =
@@ -281,7 +272,6 @@ async function success(pos) {
       }
 
       //Affichage de la list entiere avec ce code
-      const mainContent = document.querySelector(".main-content");
       let count = 0;
 
       data.list.forEach((forecast) => {
@@ -391,7 +381,20 @@ async function success(pos) {
     });
 }
 
+//Permet de recuperer la position de l'utilisateur
 navigator.geolocation.getCurrentPosition(success);
+
+//Ajout de la ville dans les favoris
+function favoriteCity() {
+  stars.style.color = "yellow";
+  villesFav.push(ville.innerHTML);
+}
+
+//Suppression de la ville dans les favoris
+function deleteCity() {
+  stars.style.color = "black";
+  villesFav.pop(ville.innerHTML);
+}
 
 //Event Listener
 form.addEventListener("submit", (e) => {
@@ -402,17 +405,6 @@ form.addEventListener("submit", (e) => {
     alert("Veuillez entrer une ville");
   }
 });
-
-//Ajout de la ville dans les favoris
-function favoriteCity() {
-  stars.style.color = "yellow";
-  villesFav.push(ville.innerHTML);
-}
-
-function deleteCity() {
-  stars.style.color = "black";
-  villesFav.pop(ville.innerHTML);
-}
 
 localisation.addEventListener("click", () => {
   location.reload();
@@ -435,9 +427,11 @@ favorite.addEventListener("click", () => {
   localisation.classList.remove("active");
 
   console.log("Vos favoris");
-  const mainContent = document.querySelector(".main-content");
 
-  mainContent.innerHTML = villesFav;
+  let villesFavo = villesFav.join(" - ");
+
+  mainContent.innerHTML = ` <div><h3>Vos villes favorites</h3>
+  <p>${villesFavo}</p></div>`;
 });
 
 stars.addEventListener("click", () => {
@@ -449,6 +443,3 @@ stars.addEventListener("click", () => {
     favoriteCity();
   }
 });
-
-
-
