@@ -28,6 +28,17 @@
   }
 
   .head-content {
+
+    .info {
+      display: flex;
+      justify-content: space-between;
+
+      .etoile {
+        font-size: 35px;
+        cursor: pointer;
+      }
+    }
+
     .head {
       display: flex;
       justify-content: space-around;

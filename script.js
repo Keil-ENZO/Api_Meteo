@@ -2,19 +2,43 @@ const inputSearch = document.getElementById("search");
 const latText = document.getElementById("lat");
 const lonText = document.getElementById("lon");
 const form = document.getElementById("form");
+const iconSearch = document.getElementById("iconSearch");
+const search = document.getElementById("search");
 
 const Api_key = "afcadc1c10c3d62cc2d1c7ec7ef9931e";
 let lat;
 let long;
 
+//objet avec les villes favorites
+let villesFav = [];
+
+console.log(villesFav[0]);
+
+const active = document.querySelector(".active");
+if (active) {
+  active.classList.remove("active");
+}
+localisation.classList.add("active");
+
+//Fonction pour l'animation de la barre de recherche
+function searchHandler() {
+  iconSearch.replaceWith(search);
+  search.style.width = "100%";
+  search.style.opacity = "1";
+  search.focus();
+}
+
 //Trouver la meteo d'une ville
-function searchCity() {
-  fetch(
+async function searchCity() {
+  await fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${inputSearch.value}&lang=fr&appid=${Api_key}&units=metric`
   )
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+
+      stars.style.color = "black";
+
       //Affichage de la météo
       ville.innerHTML = data.city.name;
       dateHeure.innerHTML =
@@ -185,19 +209,25 @@ function searchCity() {
 }
 
 //Localisation de l'utilisateur
-function success(pos) {
+async function success(pos) {
   const crd = pos.coords;
 
   lat = crd.latitude;
   long = crd.longitude;
 
   // Appel à fetch une fois que les coordonnées sont définies
-  fetch(
+  await fetch(
     `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&lang=fr&appid=${Api_key}&units=metric`
   )
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+
+      // stars.addEventListener("click", () => {
+      //   console.log("click");
+
+      //   villesFav.push(data.city.name);
+      // });
 
       //Affichage de la météo
       ville.innerHTML = data.city.name;
@@ -373,28 +403,52 @@ form.addEventListener("submit", (e) => {
   }
 });
 
+//Ajout de la ville dans les favoris
+function favoriteCity() {
+  stars.style.color = "yellow";
+  villesFav.push(ville.innerHTML);
+}
+
+function deleteCity() {
+  stars.style.color = "black";
+  villesFav.pop(ville.innerHTML);
+}
+
 localisation.addEventListener("click", () => {
   location.reload();
   localisation.classList.add("active");
   nextDays.classList.remove("active");
+  favorite.classList.remove("active");
 });
 
 nextDays.addEventListener("click", () => {
   nextDays.classList.add("active");
   localisation.classList.remove("active");
+  favorite.classList.remove("active");
+
+  console.log("Les prochains jours");
 });
 
-const active = document.querySelector(".active");
-if (active) {
-  active.classList.remove("active");
-}
-localisation.classList.add("active");
+favorite.addEventListener("click", () => {
+  favorite.classList.add("active");
+  nextDays.classList.remove("active");
+  localisation.classList.remove("active");
 
-const iconSearch = document.getElementById("iconSearch");
-const search = document.getElementById("search");
-function searchHandler() {
-  iconSearch.replaceWith(search);
-  search.style.width = "100%";
-  search.style.opacity = "1";
-  search.focus();
-}
+  console.log("Vos favoris");
+  const mainContent = document.querySelector(".main-content");
+
+  mainContent.innerHTML = villesFav;
+});
+
+stars.addEventListener("click", () => {
+  console.log("click");
+
+  if (stars.style.color === "yellow") {
+    deleteCity();
+  } else {
+    favoriteCity();
+  }
+});
+
+
+

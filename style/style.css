@@ -113,6 +113,14 @@ main {
 .content nav #search:focus {
   border: 1px solid #000;
 }
+.content .head-content .info {
+  display: flex;
+  justify-content: space-between;
+}
+.content .head-content .info .etoile {
+  font-size: 35px;
+  cursor: pointer;
+}
 .content .head-content .head {
   display: flex;
   justify-content: space-around;
