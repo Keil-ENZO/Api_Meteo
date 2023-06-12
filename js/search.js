@@ -177,6 +177,10 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   searchCity();
 
+  nextDays.classList.remove("active");
+  localisation.classList.remove("active");
+  favorite.classList.remove("active");
+
   if (inputSearch.value === "") {
     alert("Veuillez entrer une ville");
   }
