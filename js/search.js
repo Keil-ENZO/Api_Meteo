@@ -1,37 +1,21 @@
-const inputSearch = document.getElementById("search");
-const latText = document.getElementById("lat");
-const lonText = document.getElementById("lon");
-const form = document.getElementById("form");
-const iconSearch = document.getElementById("iconSearch");
-const search = document.getElementById("search");
-const active = document.querySelector(".active");
-const mainContent = document.querySelector(".main-content");
-const Api_key = "afcadc1c10c3d62cc2d1c7ec7ef9931e";
-
-let lat;
-let long;
-let villesFav = [];
-
-//Condition de la class active
-if (active) {
-  active.classList.remove("active");
+//Fonction pour l'animation de la barre de recherche
+function searchHandler() {
+  iconSearch.replaceWith(search);
+  search.style.width = "100%";
+  search.style.opacity = "1";
+  search.focus();
 }
-localisation.classList.add("active");
 
-//Localisation de l'utilisateur
-async function success(pos) {
-  const crd = pos.coords;
-
-  lat = crd.latitude;
-  long = crd.longitude;
-
-  // Appel à fetch une fois que les coordonnées sont définies
+//Trouver la meteo d'une ville
+async function searchCity() {
   await fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&lang=fr&appid=${Api_key}&units=metric`
+    `https://api.openweathermap.org/data/2.5/forecast?q=${inputSearch.value}&lang=fr&appid=${Api_key}&units=metric`
   )
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+
+      stars.style.color = "black";
 
       //Affichage de la météo
       ville.innerHTML = data.city.name;
@@ -65,7 +49,9 @@ async function success(pos) {
       humidite.innerHTML = "Humidite " + data.list[0].main.humidity + " %";
       pression.innerHTML = "Pression " + data.list[0].main.pressure + " hPa";
 
-      icon.src = `https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}.png`;
+      const newIcon = data.list[0].weather[0].icon;
+      const iconElement = document.querySelector("#icon");
+      iconElement.src = `https://openweathermap.org/img/wn/${newIcon}.png`;
 
       //Background celon la meteo
       if (data.list[0].weather[0].main === "Clear") {
@@ -73,7 +59,7 @@ async function success(pos) {
       } else if (data.list[0].weather[0].main === "Clouds") {
         document.body.style.backgroundColor = "rgb(118, 118, 118) ";
       } else if (data.list[0].weather[0].main === "Rain") {
-        document.body.style.backgroundColor = "rgb(120, 120, 118)  ";
+        document.body.style.backgroundColor = "rgb(118, 118, 130) ";
       } else if (data.list[0].weather[0].main === "Snow") {
         document.body.style.backgroundColor = "rgb(195, 181, 181)";
       } else if (data.list[0].weather[0].main === "Thunderstorm") {
@@ -85,6 +71,7 @@ async function success(pos) {
       }
 
       //Affichage de la list entiere avec ce code
+      mainContent.innerHTML = "";
       let count = 0;
 
       data.list.forEach((forecast) => {
@@ -93,7 +80,6 @@ async function success(pos) {
           forecastElement.setAttribute("href", "#");
 
           forecastElement.classList.add("main");
-
           if (count === 0) {
             forecastElement.classList.add("focus");
           }
@@ -144,19 +130,19 @@ async function success(pos) {
             iconElement.src = `https://openweathermap.org/img/wn/${newIcon}.png`;
 
             //Background celon la meteo
-            if (data.list[0].weather[0].main === "Clear") {
+            if (forecast.weather[0].main === "Clear") {
               document.body.style.backgroundColor = "skyblue";
-            } else if (data.list[0].weather[0].main === "Clouds") {
+            } else if (forecast.weather[0].main === "Clouds") {
               document.body.style.backgroundColor = "rgb(118, 118, 118) ";
-            } else if (data.list[0].weather[0].main === "Rain") {
-              document.body.style.backgroundColor = "rgb(120, 120, 118)  ";
-            } else if (data.list[0].weather[0].main === "Snow") {
-              document.body.style.backgroundColor = "rgb(195, 181, 181)";
-            } else if (data.list[0].weather[0].main === "Thunderstorm") {
-              document.body.style.backgroundColor = "rgb(84, 84, 84)";
-            } else if (data.list[0].weather[0].main === "Drizzle") {
+            } else if (forecast.weather[0].main === "Rain") {
+              document.body.style.backgroundColor = "rgb(120, 120, 118) ";
+            } else if (forecast.weather[0].main === "Snow") {
               document.body.style.backgroundColor = "rgb(188, 181, 181)";
-            } else if (data.list[0].weather[0].main === "Mist") {
+            } else if (forecast.weather[0].main === "Thunderstorm") {
+              document.body.style.backgroundColor = "rgb(84, 84, 84)";
+            } else if (forecast.weather[0].main === "Drizzle") {
+              document.body.style.backgroundColor = "rgb(188, 181, 181)";
+            } else if (forecast.weather[0].main === "Mist") {
               document.body.style.backgroundColor = "rgb(188, 181, 181)";
             }
           });
@@ -189,59 +175,21 @@ async function success(pos) {
           mainContent.appendChild(forecastElement);
 
           count++;
+        } else {
+          return;
         }
       });
+    })
+    .catch(() => {
+      alert("Cette ville n'existe pas");
     });
 }
 
-//Permet de recuperer la position de l'utilisateur
-navigator.geolocation.getCurrentPosition(success);
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  searchCity();
 
-//Event Listener
-localisation.addEventListener("click", () => {
-  location.reload();
-  localisation.classList.add("active");
-  nextDays.classList.remove("active");
-  favorite.classList.remove("active");
-});
-
-nextDays.addEventListener("click", () => {
-  nextDays.classList.add("active");
-  localisation.classList.remove("active");
-  favorite.classList.remove("active");
-
-  nextDaysWeather();
-
-  console.log("Les prochains jours");
-});
-
-favorite.addEventListener("click", () => {
-  favorite.classList.add("active");
-  nextDays.classList.remove("active");
-  localisation.classList.remove("active");
-
-  if (villesFav.includes(ville.innerHTML)) {
-    stars.style.color = "yellow";
-  } else {
-    stars.style.color = "black";
-  }
-
-  console.log("Vos favoris");
-
-  if (localStorage.getItem("villesFav") === null) {
-    mainContent.innerHTML = `<div><h3>Vos villes favorites</h3>
-    <p>Vous n'avez pas de villes favorites</p></div>`;
-  }
-
-  //Affichage des villes favorites du localStorage
-  if (localStorage.getItem("villesFav")) {
-    villesFav = JSON.parse(localStorage.getItem("villesFav")).join(" - ");
-    mainContent.innerHTML = ` <div><h3>Vos villes favorites</h3>
-    <p>${villesFav}</p></div>`;
-  }
-
-  //etoile jaune si la ville est dans les favoris
-  if (villesFav.includes(ville.innerHTML)) {
-    stars.style.color = "yellow";
+  if (inputSearch.value === "") {
+    alert("Veuillez entrer une ville");
   }
 });
