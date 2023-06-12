@@ -1,3 +1,11 @@
+const villesFavFromStorage = JSON.parse(localStorage.getItem("villesFav"));
+
+if (villesFavFromStorage && villesFavFromStorage.includes(ville.innerHTML)) {
+  stars.style.color = "yellow";
+} else {
+  stars.style.color = "black";
+}
+
 stars.addEventListener("click", () => {
   console.log("click");
 
@@ -20,11 +28,3 @@ stars.addEventListener("click", () => {
     localStorage.setItem("villesFav", JSON.stringify(villesFav));
   }
 });
-
-const villesFavFromStorage = JSON.parse(localStorage.getItem("villesFav"));
-
-if (villesFavFromStorage && villesFavFromStorage.includes(ville.innerHTML)) {
-  stars.style.color = "yellow";
-} else {
-  stars.style.color = "black";
-}

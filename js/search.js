@@ -15,8 +15,6 @@ async function searchCity() {
     .then((data) => {
       console.log(data);
 
-      stars.style.color = "black";
-
       //Affichage de la météo
       ville.innerHTML = data.city.name;
       dateHeure.innerHTML =
@@ -53,24 +51,24 @@ async function searchCity() {
       const iconElement = document.querySelector("#icon");
       iconElement.src = `https://openweathermap.org/img/wn/${newIcon}.png`;
 
-      //Background celon la meteo
-      if (data.list[0].weather[0].main === "Clear") {
-        document.body.style.backgroundColor = "skyblue";
-      } else if (data.list[0].weather[0].main === "Clouds") {
-        document.body.style.backgroundColor = "rgb(118, 118, 118) ";
-      } else if (data.list[0].weather[0].main === "Rain") {
-        document.body.style.backgroundColor = "rgb(118, 118, 130) ";
-      } else if (data.list[0].weather[0].main === "Snow") {
-        document.body.style.backgroundColor = "rgb(195, 181, 181)";
-      } else if (data.list[0].weather[0].main === "Thunderstorm") {
-        document.body.style.backgroundColor = "rgb(84, 84, 84)";
-      } else if (data.list[0].weather[0].main === "Drizzle") {
-        document.body.style.backgroundColor = "rgb(188, 181, 181)";
-      } else if (data.list[0].weather[0].main === "Mist") {
-        document.body.style.backgroundColor = "rgb(188, 181, 181)";
+      //Background selon la météo
+      const weatherType = data.list[0].weather[0].main;
+      document.body.style.backgroundColor = setBackgroundColor(weatherType);
+
+      // Vérification de la présence de la ville dans les favoris
+      const villesFavFromStorage = JSON.parse(
+        localStorage.getItem("villesFav")
+      );
+      if (
+        villesFavFromStorage &&
+        villesFavFromStorage.includes(ville.innerHTML)
+      ) {
+        stars.style.color = "yellow";
+      } else {
+        stars.style.color = "black";
       }
 
-      //Affichage de la list entiere avec ce code
+      //Affichage de la liste entière avec ce code
       mainContent.innerHTML = "";
       let count = 0;
 
@@ -84,7 +82,7 @@ async function searchCity() {
             forecastElement.classList.add("focus");
           }
 
-          //Au click affichage de la meteo celon la ou on a cliqué
+          //Au click affichage de la meteo selon celle où on a cliqué
           forecastElement.addEventListener("click", () => {
             console.log(forecast);
 
@@ -129,22 +127,10 @@ async function searchCity() {
             const iconElement = document.querySelector("#icon");
             iconElement.src = `https://openweathermap.org/img/wn/${newIcon}.png`;
 
-            //Background celon la meteo
-            if (forecast.weather[0].main === "Clear") {
-              document.body.style.backgroundColor = "skyblue";
-            } else if (forecast.weather[0].main === "Clouds") {
-              document.body.style.backgroundColor = "rgb(118, 118, 118) ";
-            } else if (forecast.weather[0].main === "Rain") {
-              document.body.style.backgroundColor = "rgb(120, 120, 118) ";
-            } else if (forecast.weather[0].main === "Snow") {
-              document.body.style.backgroundColor = "rgb(188, 181, 181)";
-            } else if (forecast.weather[0].main === "Thunderstorm") {
-              document.body.style.backgroundColor = "rgb(84, 84, 84)";
-            } else if (forecast.weather[0].main === "Drizzle") {
-              document.body.style.backgroundColor = "rgb(188, 181, 181)";
-            } else if (forecast.weather[0].main === "Mist") {
-              document.body.style.backgroundColor = "rgb(188, 181, 181)";
-            }
+            //Background selon la météo
+            const weatherType = forecast.weather[0].main;
+            document.body.style.backgroundColor =
+              setBackgroundColor(weatherType);
           });
 
           const heureElement = document.createElement("p");
@@ -180,10 +166,12 @@ async function searchCity() {
         }
       });
     })
+
     .catch(() => {
       alert("Cette ville n'existe pas");
     });
 }
+  
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();

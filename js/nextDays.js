@@ -70,21 +70,9 @@ async function nextDaysWeather() {
               iconElement.src = `https://openweathermap.org/img/wn/${newIcon}.png`;
 
               //Background celon la meteo
-              if (data.list[0].weather[0].main === "Clear") {
-                document.body.style.backgroundColor = "skyblue";
-              } else if (data.list[0].weather[0].main === "Clouds") {
-                document.body.style.backgroundColor = "rgb(118, 118, 118) ";
-              } else if (data.list[0].weather[0].main === "Rain") {
-                document.body.style.backgroundColor = "rgb(120, 120, 118)  ";
-              } else if (data.list[0].weather[0].main === "Snow") {
-                document.body.style.backgroundColor = "rgb(195, 181, 181)";
-              } else if (data.list[0].weather[0].main === "Thunderstorm") {
-                document.body.style.backgroundColor = "rgb(84, 84, 84)";
-              } else if (data.list[0].weather[0].main === "Drizzle") {
-                document.body.style.backgroundColor = "rgb(188, 181, 181)";
-              } else if (data.list[0].weather[0].main === "Mist") {
-                document.body.style.backgroundColor = "rgb(188, 181, 181)";
-              }
+              const weatherType = forecast.weather[0].main;
+              document.body.style.backgroundColor =
+                setBackgroundColor(weatherType);
             });
 
             const heureElement = document.createElement("p");

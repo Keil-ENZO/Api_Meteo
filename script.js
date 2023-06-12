@@ -18,6 +18,24 @@ if (active) {
 }
 localisation.classList.add("active");
 
+function setBackgroundColor(weatherType) {
+  if (weatherType === "Clear") {
+    return "skyblue";
+  } else if (weatherType === "Clouds") {
+    return "#888888";
+  } else if (weatherType === "Rain" || weatherType === "Drizzle") {
+    return "#808080";
+  } else if (weatherType === "Snow") {
+    return "#EFEFEF";
+  } else if (weatherType === "Thunderstorm") {
+    return "#363636";
+  } else if (weatherType === "Mist") {
+    return "#C8C8C8";
+  } else {
+    return "white";
+  }
+}
+
 //Localisation de l'utilisateur
 async function success(pos) {
   const crd = pos.coords;
@@ -67,22 +85,9 @@ async function success(pos) {
 
       icon.src = `https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}.png`;
 
-      //Background celon la meteo
-      if (data.list[0].weather[0].main === "Clear") {
-        document.body.style.backgroundColor = "skyblue";
-      } else if (data.list[0].weather[0].main === "Clouds") {
-        document.body.style.backgroundColor = "rgb(118, 118, 118) ";
-      } else if (data.list[0].weather[0].main === "Rain") {
-        document.body.style.backgroundColor = "rgb(120, 120, 118)  ";
-      } else if (data.list[0].weather[0].main === "Snow") {
-        document.body.style.backgroundColor = "rgb(195, 181, 181)";
-      } else if (data.list[0].weather[0].main === "Thunderstorm") {
-        document.body.style.backgroundColor = "rgb(84, 84, 84)";
-      } else if (data.list[0].weather[0].main === "Drizzle") {
-        document.body.style.backgroundColor = "rgb(188, 181, 181)";
-      } else if (data.list[0].weather[0].main === "Mist") {
-        document.body.style.backgroundColor = "rgb(188, 181, 181)";
-      }
+      // Background celon la meteo
+      const weatherType = data.list[0].weather[0].main;
+      document.body.style.backgroundColor = setBackgroundColor(weatherType);
 
       //Affichage de la list entiere avec ce code
       let count = 0;
@@ -144,21 +149,9 @@ async function success(pos) {
             iconElement.src = `https://openweathermap.org/img/wn/${newIcon}.png`;
 
             //Background celon la meteo
-            if (data.list[0].weather[0].main === "Clear") {
-              document.body.style.backgroundColor = "skyblue";
-            } else if (data.list[0].weather[0].main === "Clouds") {
-              document.body.style.backgroundColor = "rgb(118, 118, 118) ";
-            } else if (data.list[0].weather[0].main === "Rain") {
-              document.body.style.backgroundColor = "rgb(120, 120, 118)  ";
-            } else if (data.list[0].weather[0].main === "Snow") {
-              document.body.style.backgroundColor = "rgb(195, 181, 181)";
-            } else if (data.list[0].weather[0].main === "Thunderstorm") {
-              document.body.style.backgroundColor = "rgb(84, 84, 84)";
-            } else if (data.list[0].weather[0].main === "Drizzle") {
-              document.body.style.backgroundColor = "rgb(188, 181, 181)";
-            } else if (data.list[0].weather[0].main === "Mist") {
-              document.body.style.backgroundColor = "rgb(188, 181, 181)";
-            }
+            const weatherType = forecast.weather[0].main;
+            document.body.style.backgroundColor =
+              setBackgroundColor(weatherType);
           });
 
           const heureElement = document.createElement("p");
@@ -220,12 +213,6 @@ favorite.addEventListener("click", () => {
   nextDays.classList.remove("active");
   localisation.classList.remove("active");
 
-  if (villesFav.includes(ville.innerHTML)) {
-    stars.style.color = "yellow";
-  } else {
-    stars.style.color = "black";
-  }
-
   console.log("Vos favoris");
 
   if (localStorage.getItem("villesFav") === null) {
@@ -233,7 +220,7 @@ favorite.addEventListener("click", () => {
     <p>Vous n'avez pas de villes favorites</p></div>`;
   }
 
-  //Affichage des villes favorites du localStorage
+  // Affichage des villes favorites du localStorage
   if (localStorage.getItem("villesFav")) {
     villesFav = JSON.parse(localStorage.getItem("villesFav")).join(" - ");
     mainContent.innerHTML = ` <div><h3>Vos villes favorites</h3>
@@ -241,7 +228,12 @@ favorite.addEventListener("click", () => {
   }
 
   //etoile jaune si la ville est dans les favoris
-  if (villesFav.includes(ville.innerHTML)) {
+  const villesFavFromStorage = JSON.parse(localStorage.getItem("villesFav"));
+  if (villesFavFromStorage && villesFavFromStorage.includes(ville.innerHTML)) {
     stars.style.color = "yellow";
+  } else {
+    stars.style.color = "black";
   }
 });
+
+
