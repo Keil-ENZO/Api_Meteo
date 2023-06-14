@@ -13,8 +13,6 @@ async function searchCity() {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-
       //Affichage de la météo
       ville.innerHTML = data.city.name;
       dateHeure.innerHTML =
@@ -84,8 +82,6 @@ async function searchCity() {
 
           //Au click affichage de la meteo selon celle où on a cliqué
           forecastElement.addEventListener("click", () => {
-            console.log(forecast);
-
             const focus = document.querySelector(".focus");
             if (focus) {
               focus.classList.remove("focus");

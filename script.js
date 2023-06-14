@@ -51,7 +51,7 @@ async function success(pos) {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+   
 
       //Affichage de la météo
       ville.innerHTML = data.city.name;
@@ -106,7 +106,6 @@ async function success(pos) {
 
           //Au click affichage de la meteo celon sur l'heure selectionné
           forecastElement.addEventListener("click", () => {
-            console.log(forecast);
 
             const focus = document.querySelector(".focus");
             if (focus) {
@@ -207,7 +206,6 @@ nextDays.addEventListener("click", () => {
 
   nextDaysWeather();
 
-  console.log("Les prochains jours");
 });
 
 favorite.addEventListener("click", () => {
@@ -215,7 +213,6 @@ favorite.addEventListener("click", () => {
   nextDays.classList.remove("active");
   localisation.classList.remove("active");
 
-  console.log("Vos favoris");
 
   if (
     localStorage.getItem("villesFav") === null ||

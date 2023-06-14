@@ -7,8 +7,6 @@ if (villesFavFromStorage && villesFavFromStorage.includes(ville.innerHTML)) {
 }
 
 stars.addEventListener("click", () => {
-  console.log("click");
-
   if (stars.style.color === "yellow") {
     stars.style.color = "black";
 

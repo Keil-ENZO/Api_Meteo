@@ -1,15 +1,12 @@
 //Function pour afficher la météo des 5 prochains jours
 async function nextDaysWeather() {
   await fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&lang=fr&appid=${Api_key}&units=metric`
+    `https://api.openweathermap.org/data/2.5/forecast?q=${ville.innerHTML}&lang=fr&appid=${Api_key}&units=metric`
   ).then((response) => {
     response.json().then((data) => {
-      console.log(data);
-
       mainContent.innerHTML = "";
       let count = 0;
       let date = data.list[0].dt_txt;
-      console.log(date);
 
       data.list.forEach((forecast) => {
         if (forecast.dt_txt.slice(11, 16) === "12:00") {
@@ -27,8 +24,6 @@ async function nextDaysWeather() {
 
               //Au click affichage de la meteo celon l'heure selectionné
               forecastElement.addEventListener("click", () => {
-                console.log(forecast);
-
                 const focus = document.querySelector(".focus");
                 if (focus) {
                   focus.classList.remove("focus");
