@@ -3,6 +3,7 @@
 ## Description
 
 Utilisation de l'API de [OpenWeatherMap](https://openweathermap.org/api) pour afficher la météo d'une ville.
+De nouvelles fonctionnalités sont prevues pour la suite, comme de pourvoir choisir l'heure a la quelle on veut la météo des 5 prochains jours.
 
 ## Technologies
 
