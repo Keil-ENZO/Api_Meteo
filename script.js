@@ -193,7 +193,11 @@ navigator.geolocation.getCurrentPosition(success);
 //Event Listener
 
 localisation.addEventListener("click", () => {
-  location.reload();
+  navigator.geolocation.getCurrentPosition(success);
+  mainContent.innerHTML = "";
+  inputSearch.value = "";
+
+
   localisation.classList.add("active");
   nextDays.classList.remove("active");
   favorite.classList.remove("active");
