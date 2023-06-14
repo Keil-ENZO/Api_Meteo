@@ -6,7 +6,7 @@ function searchHandler() {
   search.focus();
 }
 
-//Trouver la meteo d'une ville
+//Function pour rechercher la meteo d'une autre ville
 async function searchCity() {
   await fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${inputSearch.value}&lang=fr&appid=${Api_key}&units=metric`
@@ -55,7 +55,7 @@ async function searchCity() {
       const weatherType = data.list[0].weather[0].main;
       document.body.style.backgroundColor = setBackgroundColor(weatherType);
 
-      // Vérification de la présence de la ville dans les favoris
+      //Vérification de la présence de la ville dans les favoris
       const villesFavFromStorage = JSON.parse(
         localStorage.getItem("villesFav")
       );

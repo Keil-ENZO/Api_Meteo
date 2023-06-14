@@ -18,12 +18,13 @@ if (active) {
 }
 localisation.classList.add("active");
 
+//Function pour changer la couleur du background celon la météo
 function setBackgroundColor(weatherType) {
   if (weatherType === "Clear") {
     return "skyblue";
   } else if (weatherType === "Clouds") {
-    return "#888888";
-  } else if (weatherType === "Rain" || weatherType === "Drizzle") {
+    return "#888899";
+  } else if (weatherType === "Rain") {
     return "#808080";
   } else if (weatherType === "Snow") {
     return "#EFEFEF";
@@ -31,6 +32,8 @@ function setBackgroundColor(weatherType) {
     return "#363636";
   } else if (weatherType === "Mist") {
     return "#C8C8C8";
+  } else if (weatherType === "Drizzle") {
+    return "#b9C9C9";
   } else {
     return "white";
   }
@@ -43,7 +46,6 @@ async function success(pos) {
   lat = crd.latitude;
   long = crd.longitude;
 
-  // Appel à fetch une fois que les coordonnées sont définies
   await fetch(
     `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&lang=fr&appid=${Api_key}&units=metric`
   )
@@ -85,11 +87,10 @@ async function success(pos) {
 
       icon.src = `https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}.png`;
 
-      // Background celon la meteo
+      //Background celon la meteo
       const weatherType = data.list[0].weather[0].main;
       document.body.style.backgroundColor = setBackgroundColor(weatherType);
 
-      //Affichage de la list entiere avec ce code
       let count = 0;
 
       data.list.forEach((forecast) => {
@@ -103,7 +104,7 @@ async function success(pos) {
             forecastElement.classList.add("focus");
           }
 
-          //Au click affichage de la meteo celon la ou on a cliqué
+          //Au click affichage de la meteo celon sur l'heure selectionné
           forecastElement.addEventListener("click", () => {
             console.log(forecast);
 
@@ -191,6 +192,7 @@ async function success(pos) {
 navigator.geolocation.getCurrentPosition(success);
 
 //Event Listener
+
 localisation.addEventListener("click", () => {
   location.reload();
   localisation.classList.add("active");
@@ -215,7 +217,10 @@ favorite.addEventListener("click", () => {
 
   console.log("Vos favoris");
 
-  if (localStorage.getItem("villesFav") === null) {
+  if (
+    localStorage.getItem("villesFav") === null ||
+    localStorage.getItem("villesFav") === "[]"
+  ) {
     mainContent.innerHTML = `<div><h3>Vos villes favorites</h3>
     <p>Vous n'avez pas de villes favorites</p></div>`;
   }

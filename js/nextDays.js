@@ -1,4 +1,4 @@
-// Affichage de la meteo des 5 prochains jours
+//Function pour afficher la météo des 5 prochains jours
 async function nextDaysWeather() {
   await fetch(
     `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&lang=fr&appid=${Api_key}&units=metric`
@@ -11,25 +11,8 @@ async function nextDaysWeather() {
       let date = data.list[0].dt_txt;
       console.log(date);
 
-      //Affichage du choix du nombre d'heure
-      const nbHours = document.createElement("select");
-      nbHours.classList.add("nbHours");
-      nbHours.innerHTML = `
-      <option value="00h00">Choisir une heure</option>
-        <option value="00h00">00h00</option>
-        <option value="03h00">03h00</option>
-        <option value="06h00">06h00</option>
-        <option value="09h00">09h00</option>
-        <option value="12h00">12h00</option>
-        <option value="15h00">15h00</option>
-        <option value="18h00">18h00</option>
-        <option value="21h00">21h00</option>
-        `;
-      mainContent.appendChild(nbHours);
-
       data.list.forEach((forecast) => {
-        //Affichage de la meteo celon le nombre d'heure choisi
-        if (forecast.dt_txt.slice(11, 16) === nbHours.value) {
+        if (forecast.dt_txt.slice(11, 16) === "12:00") {
           if (forecast.dt_txt.slice(0, 10) !== date.slice(0, 10)) {
             date = forecast.dt_txt;
             if (count < 5) {
@@ -42,7 +25,7 @@ async function nextDaysWeather() {
                 forecastElement.classList.add("focus");
               }
 
-              //Au click affichage de la meteo celon la ou on a cliqué
+              //Au click affichage de la meteo celon l'heure selectionné
               forecastElement.addEventListener("click", () => {
                 console.log(forecast);
 
@@ -89,8 +72,8 @@ async function nextDaysWeather() {
                 const iconElement = document.querySelector("#icon");
                 iconElement.src = `https://openweathermap.org/img/wn/${newIcon}.png`;
 
-                //Background celon la meteo
-                const weatherType = forecast.weather[0].main;
+                //Background selon la météo
+                const weatherType = data.list[0].weather[0].main;
                 document.body.style.backgroundColor =
                   setBackgroundColor(weatherType);
               });
